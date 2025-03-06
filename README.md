@@ -1,2 +1,4 @@
 # Azure-Netflix-Project
-Netflix Project using Azure
+Data Engineering project
+Netflix Data 
+Azure Services:- DataFactory , Databricks, Datalake
