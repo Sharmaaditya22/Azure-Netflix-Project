@@ -1,0 +1,64 @@
+{
+  "job_id": 502619511537424,
+  "creator_user_name": "mahak24sharma@gmail.com",
+  "run_as_user_name": "mahak24sharma@gmail.com",
+  "run_as_owner": true,
+  "settings": {
+    "name": "New Job Mar 06, 2025, 05:30 PM",
+    "email_notifications": {
+      "no_alert_for_skipped_runs": false
+    },
+    "webhook_notifications": {},
+    "timeout_seconds": 0,
+    "max_concurrent_runs": 1,
+    "tasks": [
+      {
+        "task_key": "Lookup_Location",
+        "run_if": "ALL_SUCCESS",
+        "notebook_task": {
+          "notebook_path": "/Workspace/Netflix project/3_lookupNotebook",
+          "source": "WORKSPACE"
+        },
+        "existing_cluster_id": "0306-113940-7excbgap",
+        "timeout_seconds": 0,
+        "email_notifications": {},
+        "webhook_notifications": {}
+      },
+      {
+        "task_key": "SilverNotebook",
+        "depends_on": [
+          {
+            "task_key": "Lookup_Location"
+          }
+        ],
+        "run_if": "ALL_SUCCESS",
+        "for_each_task": {
+          "inputs": "{{tasks.Lookup_Location.values.myarr}}",
+          "task": {
+            "task_key": "SilverNotebook_iteration",
+            "run_if": "ALL_SUCCESS",
+            "notebook_task": {
+              "notebook_path": "/Workspace/Netflix project/2_silver",
+              "base_parameters": {
+                "sourcefolder": "{{input.sourcefolder}}",
+                "targetfolder": "{{input.targetfolder}}"
+              },
+              "source": "WORKSPACE"
+            },
+            "existing_cluster_id": "0306-113940-7excbgap",
+            "timeout_seconds": 0,
+            "email_notifications": {},
+            "webhook_notifications": {}
+          }
+        },
+        "timeout_seconds": 0,
+        "email_notifications": {}
+      }
+    ],
+    "format": "MULTI_TASK",
+    "queue": {
+      "enabled": true
+    }
+  },
+  "created_time": 1741262401201
+}
